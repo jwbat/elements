@@ -1,11 +1,11 @@
 <template>
   <base-card class="card">
     <input 
-      @input="receiveInput"
-      v-model="val"
-      type="text" 
-      maxlength="3"
-      :placeholder="nr" 
+      @keydown.enter="receiveInput"
+      type="number" 
+      min="1"
+      max="119"
+      placeholder="Nr" 
     /> 
     <base-button 
       v-if="isPlaying" 
@@ -72,26 +72,8 @@ export default {
     'next-in-group',
     'prev-in-group',
   ],
-  data() {
-    return {
-      val: '',
-      oldVal: ''
-    };
-  },
   computed: {
     nr() { return this.el.number }
-  },
-  watch: {
-    val(newVal) {
-      if (!(newVal < 120 && newVal > 0)) {
-        this.val = this.oldval;
-      } else {
-        this.oldVal = newVal;
-      }
-    },
-    el() {
-      this.val = this.nr;
-    }
   },
   setup(_, context) {
     window.addEventListener('keydown', e => {
@@ -100,10 +82,11 @@ export default {
     const turnPage = () => context.emit('turn-page');
 
     function receiveInput() {
-      const n = parseInt(event.target.value);
+      const n = event.target.value;
       if (n < 120 && n > 0) {
         context.emit('set-number', n);
       }
+      event.target.value = null;
     }
 
     const isPlaying = ref(false);
@@ -162,9 +145,21 @@ input {
   color: #6ba6ff;
   font-size: 1.4rem;
   height: 3rem;
-  width: 3rem;
+  width: 4rem;
   text-align: center;
   min-height: 0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 ::placeholder {
