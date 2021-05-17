@@ -1,5 +1,9 @@
 <template>
   <base-card class="card">
+    <base-button 
+      @click="toggleInfo"
+      class="btn"><info-icon></info-icon> 
+    </base-button> 
     <input 
       @keydown.enter="receiveInput"
       type="number" 
@@ -10,34 +14,34 @@
     <base-button 
       v-if="isPlaying" 
       @click="togglePlay"
-      class="btn play-pause"><pause-icon></pause-icon> 
+      class="btn play-pause"><PauseIcon/>
     </base-button> 
     <base-button 
       v-else 
       @click="togglePlay"
-      class="btn play-pause"><play-icon></play-icon> 
+      class="btn play-pause"><PlayIcon/>
     </base-button> 
   </base-card>
   <base-card class="card">
     <base-button 
       class="btn" 
-      @click="decrementNumber"><arrow-left></arrow-left> 
+      @click="decrementNumber"><ArrowLeft/>
     </base-button> 
     <base-button 
       class="btn" 
-      @click="incrementNumber"><arrow-right></arrow-right> 
+      @click="incrementNumber"><ArrowRight/>
     </base-button> 
     <base-button 
       class="btn" 
-      @click="nextInGroup"><arrow-down></arrow-down> 
+      @click="nextInGroup"><ArrowDown/>
     </base-button> 
     <base-button 
       class="btn" 
-      @click="prevInGroup"><arrow-up></arrow-up> 
+      @click="prevInGroup"><ArrowUp/>
     </base-button> 
     <base-button 
       class="btn" 
-      @click="turnPage"><more-icon></more-icon> 
+      @click="turnPage"><MoreIcon/>
     </base-button> 
   </base-card> 
 </template>
@@ -45,6 +49,7 @@
 <script>
 import { ref } from 'vue';
 
+import InfoIcon from '../icons/InfoIcon.vue';
 import MoreIcon from '../icons/MoreIcon.vue';
 import PlayIcon from '../icons/PlayIcon.vue';
 import PauseIcon from '../icons/PauseIcon.vue';
@@ -56,6 +61,7 @@ import ArrowLeft from '../icons/ArrowLeft.vue';
 export default {
   props: ['el'],
   components: {
+    InfoIcon,
     PlayIcon,
     PauseIcon,
     MoreIcon,
@@ -65,6 +71,7 @@ export default {
     ArrowLeft,
   },
   emits: [
+    'toggle-info',
     'turn-page',
     'set-number',
     'increment-number',
@@ -72,14 +79,12 @@ export default {
     'next-in-group',
     'prev-in-group',
   ],
-  computed: {
-    nr() { return this.el.number }
-  },
   setup(_, context) {
     window.addEventListener('keydown', e => {
       if (e.keyCode == 32) { togglePlay() }
     });
     const turnPage = () => context.emit('turn-page');
+    const toggleInfo = () => context.emit('toggle-info');
 
     function receiveInput() {
       const n = event.target.value;
@@ -109,6 +114,7 @@ export default {
     const prevInGroup = () => { context.emit('prev-in-group') };
 
     return {
+      toggleInfo,
       isPlaying,
       togglePlay,
       receiveInput,

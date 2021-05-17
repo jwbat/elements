@@ -1,18 +1,24 @@
 <template>
-  <section :class="colorClass">
-    <transition name="fade" mode="out-in">
-      <component :is="page" :el="element"></component> 
-    </transition> 
-    <control-panel
-      :el="element"
-      @turn-page="turn"
-      @set-number="setNumber"
-      @increment-number="incrementNumber"
-      @decrement-number="decrementNumber"
-      @next-in-group="nextInGroup"
-      @prev-in-group="prevInGroup"
-    ></control-panel> 
-  </section> 
+  <transition name="fade" mode="out-in">
+    <section v-if="info">
+      <InfoPage @toggle-info="toggleInfoPage"/>
+    </section> 
+    <section v-else :class="colorClass">
+      <transition name="fade" mode="out-in">
+        <component :is="page" :el="element"></component> 
+      </transition> 
+      <control-panel
+        :el="element"
+        @turn-page="turn"
+        @set-number="setNumber"
+        @increment-number="incrementNumber"
+        @decrement-number="decrementNumber"
+        @next-in-group="nextInGroup"
+        @prev-in-group="prevInGroup"
+        @toggle-info="toggleInfoPage"
+      ></control-panel> 
+    </section> 
+  </transition> 
 </template>
 
 <script>
@@ -23,9 +29,21 @@ import useSize from './composables/sizeWindow.js';
 
 import PageOne from './pages/PageOne.vue';
 import PageTwo from './pages/PageTwo.vue';
+import InfoPage from './pages/InfoPage.vue';
 
 export default {
-  components: { PageOne, PageTwo },
+  components: { PageOne, PageTwo, InfoPage },
+  data() {
+    return {
+      info: false
+    };
+  },
+  methods: {
+    toggleInfoPage() {
+      this.info = !this.info;
+    }
+  },
+
   setup() {
     const { elements, page, turnPage, chooseClass } = useNumber();
     useSize();

@@ -1,4 +1,4 @@
-import { ref, isReactive } from 'vue';
+import { ref } from 'vue';
 import elements from '../data.js';
 
 export default function useNumber() {
@@ -42,7 +42,6 @@ export default function useNumber() {
 
   return {
     elements,
-    isReactive,
     page,
     turnPage,
     chooseClass,
