@@ -25,19 +25,19 @@
   <base-card class="card">
     <base-button 
       class="btn" 
-      @click="decrementNumber"><ArrowLeft/>
-    </base-button> 
-    <base-button 
-      class="btn" 
-      @click="incrementNumber"><ArrowRight/>
-    </base-button> 
-    <base-button 
-      class="btn" 
       @click="nextInGroup"><ArrowDown/>
     </base-button> 
     <base-button 
       class="btn" 
       @click="prevInGroup"><ArrowUp/>
+    </base-button> 
+    <base-button 
+      class="btn" 
+      @click="decrementNumber"><ArrowLeft/>
+    </base-button> 
+    <base-button 
+      class="btn" 
+      @click="incrementNumber"><ArrowRight/>
     </base-button> 
     <base-button 
       class="btn" 
